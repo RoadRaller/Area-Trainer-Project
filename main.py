@@ -20,7 +20,6 @@ def getInfo():
         l[2] = int(l[2])
         
         info.append(l)
-    print(info)
     return info
 
 def pushFile(info):
@@ -49,22 +48,43 @@ def findInfo(user):
     info = getInfo()
     for u in info:
         if u[0] == user:
+            print(u)
             return u
-        print(u)
+
+    
     return None
 
 
 
-def register(name,password):
+def register():
+    name = input("enter name:")
+    password = input("password:")
     new = [name,password,0]
     if findInfo(name) == None:
         addInfo(new)
         print("register complete")
+        return name
     else:
-        print('name taken')
+        print('name taken,try again')
+        return register()
 
 def login():
-    pass
+    
+    info = getInfo()
+    name = input("username:")
+    for user in info:
+        if user[0] == name:
+            password = input("password:")
+            if password == user[1]:
+                print("logged in")
+                return user[0]
+            else:
+                print("try again")
+                return login()
+                             
+
+
+
 #question
 
 def qRec():
@@ -91,16 +111,16 @@ def genOpt(ans):
     return opt,ind 
 
 def askQ(user,mode):
-    if   mode == "tri":
+    if   mode == "t":
         w,h,ans = qTri()
         print("find area of triangle")
         print(f"w:{w},h:{h}")
-    elif mode == "rec":
+    elif mode == "r":
         w,h,ans = qRec()
         print("find area of rectangle")
         print(f"w:{w},h:{h}")
 
-    elif mode == "cir":
+    elif mode == "c":
         r,ans = qCir()
         print("find area of circle(pi)")
         print(f"r:{r}")
@@ -120,8 +140,24 @@ def askQ(user,mode):
 
 
 
+
+o = input("login(1) or sign up(2)")    
+if o == "1":
+    user = login()
+elif o == "2":
+    user = register()
+
+
+while True:
+    print("answer question(1),checkinfo(2),logout(3)")
     
-
-
-askQ("u1","tri")
-findInfo("u1")
+    opt = input()
+    if opt == "1":
+        mode = input("circles(c),triangles(t),rectangle/sqaures(r)")
+        askQ(user,mode)
+    elif opt == "2":
+        name = input("target username: ")
+        findInfo(name)
+    elif opt == "3":
+        break
+        
